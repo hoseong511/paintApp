@@ -84,8 +84,7 @@ function handleSaveClick(event){
   const image = canvas.toDataURL("image/png");
   const link = document.createElement("a");
   link.href = image;
-  link.download= "PaintApp[🎨]";
-  console.log(image);
+  link.download= "PaintApp[🎨]";  
   link.click();
   
 }
