@@ -22,8 +22,6 @@ function onMouseUp(event){
   stopPainting();
 }
 
-
-
 if(canvas && click){  
   canvas.addEventListener("mousemove", onMouseMove);
   canvas.addEventListener("mousedown", onMouseDown);
