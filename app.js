@@ -3,12 +3,19 @@ const colors = document.querySelectorAll(".jsColor");
 const ctx = canvas.getContext("2d");
 const range = document.getElementById("jsRange");
 const mode = document.getElementById("jsMode");
+const saveBtn = document.getElementById("jsSave");
 
-canvas.width = 700;
-canvas.height = 700;
-ctx.strokeStyle="##2c2c2c";
+const INITAL_COLOR = "##2c2c2c";
+const CANVAS_SIZE=700;
+
+canvas.width = CANVAS_SIZE;
+canvas.height = CANVAS_SIZE;
+
+ctx.fillStyle="white";
+ctx.fillRect(0, 0, canvas.width, canvas.height);  
+ctx.strokeStyle=INITAL_COLOR;
+ctx.fillStyle=INITAL_COLOR;
 ctx.lineWidth = 2.5;
-
 
 let painting = false;
 let filling = false;
@@ -38,9 +45,11 @@ function onMouseMove(event){
 function handleColorClick(event){
   colors.forEach(color =>
     color.classList.remove(SHOWING_CN));
+
   const color = event.target.style.backgroundColor;  
   event.target.classList.add(SHOWING_CN)
   ctx.strokeStyle = color;
+  ctx.fillStyle = color;
 }
 
 function handlRangeChage(event){
@@ -55,8 +64,30 @@ function handleModeClick(){
     mode.innerText = "Fill";
   } else{
     filling = true;
-    mode.innerText="Paint";
+    mode.innerText="Paint";    
   }
+}
+
+function handleCanvasClick(){
+  if(filling){
+    ctx.fillRect(0, 0, canvas.width, canvas.height);  
+  } 
+  
+}
+
+function handleCM(event){
+  event.preventDefault();
+  console.log(event);
+}
+
+function handleSaveClick(event){
+  const image = canvas.toDataURL("image/png");
+  const link = document.createElement("a");
+  link.href = image;
+  link.download= "PaintApp[🎨]";
+  console.log(image);
+  link.click();
+  
 }
 
 if(canvas){  
@@ -64,6 +95,8 @@ if(canvas){
   canvas.addEventListener("mousedown", startPainting);
   canvas.addEventListener("mouseup", stopPainting);
   canvas.addEventListener("mouseleave", stopPainting);
+  canvas.addEventListener("click", handleCanvasClick);
+  canvas.addEventListener("contextmenu", handleCM);
 }
 
 if(colors){
@@ -77,4 +110,8 @@ if(range){
 
 if(mode){
   mode.addEventListener("click",handleModeClick)
+}
+
+if(saveBtn){
+  saveBtn.addEventListener("click", handleSaveClick)
 }
